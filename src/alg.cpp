@@ -42,7 +42,8 @@ void PMTree::buildTree(std::shared_ptr<Node> node,
   }
 }
 
-void PMTree::getAllPermutations(std::shared_ptr<Node> node, std::vector<char>& current,
+void PMTree::getAllPermutations(std::shared_ptr<Node> node,
+                                std::vector<char>& current,
                                 std::vector<std::vector<char>>& result) {
   if (!node) return;
   if (node->value != '\0') {
