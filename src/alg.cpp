@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
-#include  "tree.h"
+#include "tree.h"
 
 int PMTree::factorial(int n) {
   if (n <= 1) return 1;
@@ -59,33 +59,34 @@ void PMTree::getAllPermutations(std::shared_ptr<Node> node, std::vector<char>& c
     current.pop_back();
   }
 }
-std::vector<std::vector<char>> PMTree::getAllPerms() {
+
+std::vector<std::vector<char>> getAllPerms(PMTree& tree) {
   std::vector<std::vector<char>> result;
-  if (!root || root->children.empty()) {
+  if (!tree.root || tree.root->children.empty()) {
     return result;
   }
   std::vector<char> current;
-  for (auto& child : root->children) {
-    getAllPermutations(child, current, result);
+  for (auto& child : tree.root->children) {
+    tree.getAllPermutations(child, current, result);
   }
   return result;
 }
 
-std::vector<char> PMTree::getPerm1(int num) {
+std::vector<char> getPerm1(PMTree& tree, int num) {
   if (num < 1) return std::vector<char>();
-  int totalPerms = factorial(originalElements.size());
+  int totalPerms = PMTree::factorial(tree.originalElements.size());
   if (num > totalPerms) return std::vector<char>();
-  std::vector<std::vector<char>> allPerms = getAllPerms();
+  std::vector<std::vector<char>> allPerms = getAllPerms(tree);
   if (num <= static_cast<int>(allPerms.size())) {
     return allPerms[num - 1];
   }
   return std::vector<char>();
 }
 
-bool PMTree::navigateToPermutation(std::shared_ptr<Node> node,
-                                   std::vector<char>& result,
-                                   int& remainingNum,
-                  const std::vector<char>& originalElements) {
+bool navigateToPermutation(std::shared_ptr<PMTree::Node> node,
+                           std::vector<char>& result,
+                           int& remainingNum,
+                           const std::vector<char>& originalElements) {
   if (!node) return false;
   if (node->value != '\0') {
     result.push_back(node->value);
@@ -104,21 +105,21 @@ bool PMTree::navigateToPermutation(std::shared_ptr<Node> node,
                                remainingNum, originalElements);
 }
 
-std::vector<char> PMTree::getPerm2(int num) {
+std::vector<char> getPerm2(PMTree& tree, int num) {
   if (num < 1) return std::vector<char>();
-  int n = originalElements.size();
-  int totalPerms = factorial(n);
+  int n = tree.originalElements.size();
+  int totalPerms = PMTree::factorial(n);
   if (num > totalPerms) return std::vector<char>();
   std::vector<char> result;
   int currentNum = num;
-  int blockSize = factorial(n - 1);
+  int blockSize = PMTree::factorial(n - 1);
   int childIndex = (num - 1) / blockSize;
-  if (childIndex >= static_cast<int>(root->children.size())) {
+  if (childIndex >= static_cast<int>(tree.root->children.size())) {
     return std::vector<char>();
   }
   currentNum = (num - 1) % blockSize + 1;
-  if (navigateToPermutation(root->children[childIndex], result,
-                            currentNum, originalElements)) {
+  if (navigateToPermutation(tree.root->children[childIndex], result,
+                            currentNum, tree.originalElements)) {
     return result;
   }
   return std::vector<char>();
