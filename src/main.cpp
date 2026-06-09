@@ -77,7 +77,7 @@ int main() {
       break;
     }
   }
-  system("mkdir -p result");
+  int ret = system("mkdir -p result");
   (void)ret;
   std::ofstream csv("result/data.csv");
   csv << "n,getAllPerms_us,getPerm1_us,getPerm2_us\n";
