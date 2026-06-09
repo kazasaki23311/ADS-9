@@ -10,7 +10,7 @@ class PMTree {
   struct Node {
     char value;
     std::vector<std::shared_ptr<Node>> children;
-    Node(char val) : value(val) {}
+    explicit Node(char val) : value(val) {}
   };
   std::shared_ptr<Node> root;
   std::vector<char> originalElements;
@@ -18,7 +18,7 @@ class PMTree {
   void getAllPermutations(std::shared_ptr<Node> node, std::vector<char>& current,
                           std::vector<std::vector<char>>& result);
  public:
-  PMTree(const std::vector<char>& elements);
+  explicit PMTree(const std::vector<char>& elements);
   ~PMTree() = default;
   std::vector<std::vector<char>> getAllPerms();
   std::vector<char> getPerm1(int num);
