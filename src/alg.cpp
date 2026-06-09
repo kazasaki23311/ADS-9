@@ -1,7 +1,7 @@
 // Copyright 2022 NNTU-CS
 #include <algorithm>
-#include <stdexcept>
-#include <iostream>
+#include <memory>
+#include <vector>
 #include  "tree.h"
 
 int PMTree::factorial(int n) {
@@ -24,7 +24,8 @@ PMTree::PMTree(const std::vector<char>& elements) : originalElements(elements) {
   buildTree(root, sorted);
 }
 
-void PMTree::buildTree(std::shared_ptr<Node> node, std::vector<char> remaining) {
+void PMTree::buildTree(std::shared_ptr<Node> node,
+                       std::vector<char> remaining) {
   if (remaining.empty()) {
     return;
   }
@@ -41,7 +42,7 @@ void PMTree::buildTree(std::shared_ptr<Node> node, std::vector<char> remaining) 
   }
 }
 
-void PMTree::getAllPermutations(std::shared_ptr<Node> node, std::vector<char>& current, 
+void PMTree::getAllPermutations(std::shared_ptr<Node> node, std::vector<char>& current,
                                 std::vector<std::vector<char>>& result) {
   if (!node) return;
   if (node->value != '\0') {
@@ -81,11 +82,10 @@ std::vector<char> PMTree::getPerm1(int num) {
   return std::vector<char>();
 }
 
-bool navigateToPermutation(std::shared_ptr<PMTree::Node> node, 
-                           std::vector<char>& result, 
-                           int& remainingNum, 
-                           const std::vector<char>& originalElements,
-                           PMTree& tree) {
+bool PMTree::navigateToPermutation(std::shared_ptr<Node> node,
+                                   std::vector<char>& result,
+                                   int& remainingNum,
+                  const std::vector<char>& originalElements) {
   if (!node) return false;
   if (node->value != '\0') {
     result.push_back(node->value);
@@ -100,8 +100,8 @@ bool navigateToPermutation(std::shared_ptr<PMTree::Node> node,
     return false;
   }
   remainingNum = (remainingNum - 1) % blockSize + 1;
-  return navigateToPermutation(node->children[childIndex], result, remainingNum, 
-                               originalElements, tree);
+  return navigateToPermutation(node->children[childIndex], result,
+                               remainingNum, originalElements);
 }
 
 std::vector<char> PMTree::getPerm2(int num) {
@@ -117,8 +117,8 @@ std::vector<char> PMTree::getPerm2(int num) {
     return std::vector<char>();
   }
   currentNum = (num - 1) % blockSize + 1;
-  if (navigateToPermutation(root->children[childIndex], result, currentNum, 
-                            originalElements, *this)) {
+  if (navigateToPermutation(root->children[childIndex], result,
+                            currentNum, originalElements)) {
     return result;
   }
   return std::vector<char>();
