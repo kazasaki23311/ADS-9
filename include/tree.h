@@ -17,6 +17,10 @@ class PMTree {
   void buildTree(std::shared_ptr<Node> node, std::vector<char> remaining);
   void getAllPermutations(std::shared_ptr<Node> node, std::vector<char>& current,
                           std::vector<std::vector<char>>& result);
+  bool navigateToPermutation(std::shared_ptr<Node> node,
+                             std::vector<char>& result,
+                             int& remainingNum,
+                             const std::vector<char>& originalElements);
  public:
   explicit PMTree(const std::vector<char>& elements);
   ~PMTree() = default;
