@@ -1,4 +1,5 @@
 // Copyright 2022 NNTU-CS
+#include <string>
 #include <iostream>
 #include <vector>
 #include <chrono>
@@ -56,7 +57,8 @@ int main() {
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> time1 = end - start;
     getAllPermsTimes.push_back(time1.count());
-    std::cout << std::setw(20) << std::fixed << std::setprecision(6) << time1.count();
+    std::cout << std::setw(20) << std::fixed
+      << std::setprecision(6) << time1.count();
     start = std::chrono::high_resolution_clock::now();
     std::vector<char> p1 = getPerm1(tree, randomPermNum);
     end = std::chrono::high_resolution_clock::now();
@@ -76,6 +78,7 @@ int main() {
     }
   }
   system("mkdir -p result");
+  (void)ret;
   std::ofstream csv("result/data.csv");
   csv << "n,getAllPerms_us,getPerm1_us,getPerm2_us\n";
   for (size_t i = 0; i < sizes.size(); i++) {
